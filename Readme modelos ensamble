@@ -1,0 +1,50 @@
+# Modelos de Ensamble para Clasificación y Regresión — Datos de Tarjetas de Crédito
+
+Comparación sistemática de modelos de aprendizaje supervisado (lineales, árboles y ensambles) aplicados a un dataset real de comportamiento de tarjetahabientes, con sintonización de hiperparámetros en cada modelo.
+
+*Trabajo académico — Universidad EAFIT, 2024.*
+
+## Dataset
+
+[Credit Card Dataset for Clustering (Kaggle)](https://www.kaggle.com/datasets/arjunbhasin2013/ccdata) — 9,000 registros de tarjetahabientes con variables de comportamiento financiero: balance, frecuencia de compras, avances en efectivo, límite de crédito, pagos mínimos, antigüedad del servicio (tenure), entre otras.
+
+## Objetivo
+
+Entrenar y comparar múltiples familias de modelos supervisados sobre dos tareas distintas:
+
+1. **Clasificación** — predecir la antigüedad del servicio (`TENURE`) de un cliente.
+2. **Regresión** — predecir el límite de crédito (`CREDIT_LIMIT`) asignado a un cliente.
+
+## Modelos comparados
+
+| Familia | Clasificación | Regresión |
+|---|---|---|
+| Modelo lineal / base | Regresión Logística | — |
+| Árbol de decisión | ✅ (con poda vía `ccp_alpha`) | ✅ |
+| Bagging | ✅ | ✅ |
+| Random Forest | ✅ | ✅ |
+| Gradient Boosting | ✅ | ✅ |
+
+Cada modelo fue optimizado mediante **búsqueda de hiperparámetros** (`RandomizedSearchCV` / `GridSearchCV`), evaluado con matrices de confusión y `classification_report` para clasificación, y con RMSE para regresión.
+
+## Hallazgos clave
+
+- El **Random Forest** mejoró notablemente la capacidad de clasificación frente al árbol de decisión individual y al modelo Bagging, siendo capaz de predecir correctamente clientes con distintos niveles de antigüedad (no solo la clase mayoritaria).
+- El **Gradient Boosting** obtuvo el mejor desempeño general en la tarea de clasificación.
+- Las variables más importantes para predecir la antigüedad del cliente fueron `BALANCE_FREQUENCY` (15.66%), `CASH_ADVANCE_FREQUENCY` (15.31%) y `MINIMUM_PAYMENTS` (10.04%) — es decir, el comportamiento de uso y pago pesa más que el monto de las transacciones en sí.
+- Un reto identificado en el dataset fue el fuerte desbalance de clases en `TENURE` (la mayoría de clientes concentrados en 12 meses de antigüedad), lo que exigió especial cuidado en la interpretación de las métricas de clasificación.
+
+## Stack técnico
+
+`Python` · `scikit-learn` (Pipelines, ColumnTransformer, RandomizedSearchCV/GridSearchCV) · `Pandas` / `NumPy` · `Matplotlib`
+
+## Contenido del repositorio
+
+| Archivo | Descripción |
+|---|---|
+| `Proyecto_Final_Supervisado.ipynb` | Notebook completo: preparación de datos, entrenamiento y comparación de los 5 modelos, interpretación de resultados |
+
+## Habilidades aplicadas
+
+Aprendizaje supervisado (clasificación y regresión) · Modelos de ensamble (Bagging, Random Forest, Gradient Boosting) · Optimización de hiperparámetros · Interpretación de importancia de variables · Evaluación de modelos
+
